@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth import login
-from .models import Chat
+from .models import Chat, Message
 from django.contrib.auth.decorators import login_required
 
 
@@ -28,4 +28,5 @@ def signup(request):
 @login_required
 def chat(request, slug):
     chat = Chat.objects.get(slug=slug)
-    return render(request, 'chat.html', {'chat': chat})
+    messages = Message.objects.filter(chat=chat)[0:32]
+    return render(request, 'chat.html', {'chat': chat, 'messages': messages})
