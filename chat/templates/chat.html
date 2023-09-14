@@ -85,34 +85,24 @@
     </div>
   </div>
 </div>
-{% endblock %} 
-
-{% block scripts %} 
-
-{{ chat.slug|json_script:"json-chatname" }}
+{% endblock %} {% block scripts %} {{ chat.slug|json_script:"json-chatname" }}
 <script>
   // const chatName = JSON.parse(
   //   document.getElementById("json-chatname").textContent
   // );
 
-  const chatName = '1'
+  const chatName = "1";
 
   const chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/'
-        + chatName
-        + '/'
-    );
+    "ws://" + window.location.host + "/ws/" + chatName + "/"
+  );
 
-  new WebSocket('ws://127.0.0.1:8000/ws/')
+  chatSocket.onclose = function (e) {
+    console.log("CLOSE");
+  };
 
-  // chatSocket.onclose = function (e) {
-  //   console.log("CLOSE");
-  // };
-
-  // chatSocket.onmessage = function (e) {
-  //   console.log("SMS");
-  // };
+  chatSocket.onmessage = function (e) {
+    console.log("SMS");
+  };
 </script>
 {% endblock %}

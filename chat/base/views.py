@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from django.contrib.auth import login
+from .models import Chat
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def main(request):
-    return render(request, 'main.html')
+    chats = Chat.objects.all()
+    return render(request, 'main.html', {'chats': chats})
 
 
 def signup(request):
@@ -19,3 +23,9 @@ def signup(request):
         form = SignupForm()
 
         return render(request, 'signup.html', {'form': form})
+
+
+@login_required
+def chat(request, slug):
+    chat = Chat.objects.get(slug=slug)
+    return render(request, 'chat.html', {'chat': chat})
